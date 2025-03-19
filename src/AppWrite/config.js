@@ -37,7 +37,7 @@ class Service {
     }
     
 
-    async addToCart({ productId, prodName, price, category, quantity, discount, ...rest }) {
+    async addToCart({ productId, prodName, price, images, category, quantity, discount, ...rest }) {
         try {
             return await this.databases.createDocument(
                 env.appwriteDatabaseId,
@@ -48,7 +48,8 @@ class Service {
                     prodName,
                     price,
                     category,
-                    discount
+                    discount,
+                    images
                     // quantity,
                     // ...rest,
                 }

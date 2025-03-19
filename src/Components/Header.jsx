@@ -4,8 +4,12 @@ import { CiShoppingCart } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { MdOutlineLightMode } from "react-icons/md";
+import { useNavigate } from 'react-router';
 
 function Header() {
+
+    const navigate = useNavigate()
+
   return (
     <div className='sticky z-30 top-0 w-full bg-gray-900 h-24 border-b border-gray-400/30'>
         <div className='relative w-full  flex flex-row-reverse items-center gap-3 p-3'>
@@ -16,7 +20,7 @@ function Header() {
             </div>
 
             {/* Buy Section*/}
-            <div className='p-3 bg-slate-800 flex  text-white gap-2 items-center rounded-full '>
+            <div className='p-3 bg-slate-800 flex  text-white gap-2 items-center rounded-full cursor-pointer' onClick={() => navigate("/cart")}>
                 <CiShoppingCart className='text-xl'/>
                 <p>Cart</p>
             </div>

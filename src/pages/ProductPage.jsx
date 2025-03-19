@@ -1,8 +1,8 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import { useLocation, useNavigate, useParams } from "react-router"; 
 import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
-import service from "../AppWrite/config"
+import service from "../AppWrite/config";
 import env from "../ImportEnvs/Envs";
 function ProductPage() {
 
@@ -11,7 +11,10 @@ function ProductPage() {
     const [feacuredimg, setImg] = useState("")
     const navigate = useNavigate()
     const { item } = location.state || {}
-    const {id: productId , title: prodName, price ,category , stock: quantity , discountPercentage: discount, ...rest} = item || {} // yha pr apnne de-structure kiya hai // to yha pr title ka name mtlb key apan productName dediya hai 
+
+
+
+    const {id: productId , title: prodName, price, images, category , stock: quantity , discountPercentage: discount, ...rest} = item || {} // yha pr apnne de-structure kiya hai // to yha pr title ka name mtlb key apan productName dediya hai 
     console.log("id:",item);
 
     const today = new Date()
@@ -26,17 +29,23 @@ function ProductPage() {
 
     const handleCart = async () => {
         console.log(":::---", item)
-      if(item) {
-        service.addToCart({productId  //  ghar ake daldena price or prodName ye sab price ko number me daldena 
-            ,prodName
-            ,price: formattedPrice
-            ,quantity
-            ,discount: formattedDiscount
-            // ,category 
-            // , ...rest
-        }) // yha pr apnne de-structure kiya hai 
-        navigate('/cart')
-      }
+        const product = await service.fetchBuyNowItems() || [];
+        const isItemExist = product?.some(cartItem => cartItem.prodName === prodName) // to isme item.title likhne ki jarurat nhi hai kyuki apnne upar de-structure kr liya hai 
+
+        if(!isItemExist) { // agar same product excist nhi krta to addTOcart kro warna 
+            service.addToCart({productId  //  ghar ake daldena price or prodName ye sab price ko number me daldena 
+                ,prodName
+                ,price: formattedPrice
+                ,quantity: 1    
+                ,discount: formattedDiscount
+                ,images
+                // ,category 
+                // , ...rest
+            }) // yha pr apnne de-structure kiya hai 
+            navigate('/cart')
+        }else{
+            navigate('/cart')
+        }
     }
 
     const handleBuyNow = () =>{
@@ -50,7 +59,7 @@ function ProductPage() {
             navigate('/cart')
         }
         console.log(date);
-        
+
     }
     
     return (

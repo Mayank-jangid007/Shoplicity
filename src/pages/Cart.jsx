@@ -3,7 +3,42 @@ import service from '../AppWrite/config'
 
 function Cart() {
 
-    const [cartItem, setCartItem] = useState([]) 
+    const [ cartItem, setCartItem] = useState([])
+    
+    const handleDecreaseQuantity = async (data) => { // agar data.quantity is null/undefined to function yhi ruk jaega mtlb reutrn hojaega 
+      if(!data.quantity || data.quantity <= 0) return
+        const updatedItems = cartItem.map(i => {
+          if(i.productId === data.productId){
+            return{ ...i, quantity: data.quantity - 1 }
+          }
+          return i
+        })
+
+        setCartItem(updatedItems)
+      
+      // Update in database     
+      await service.addToCart({
+        ...data,
+        quantity: data.quantity - 1 // isme apan direactly updatedItems bhi de skte hai apnne yha overwrite kiya hai bus
+      })
+    }
+
+    const handleIncreaseQuantity = async (data) => {
+      let updatedItems = cartItem.map((i) => {
+        if(i.productId === data.productId){
+          return { ...i, quantity: data.quantity + 1}
+        }
+        return i
+      })
+
+      setCartItem(updatedItems);
+
+      await service.addToCart({
+        ...data,
+        quantity: data.quantity + 1
+      }) // to apnne idhar sidha pass krdiya updatedItems or decrement me apnne overwrite kiya tha
+
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -11,13 +46,18 @@ function Cart() {
                 const item = await service.fetchBuyNowItems() || [];
                 setCartItem(item);
                 console.log("====", item);
-            } catch (error) {
-                console.log("error::::", error);
+            } catch (error) { 
+                console.log("error::::", error);   
             }
         };
     
         fetchData();
-    }, []);
+      }, []);
+      
+      console.log("==+==+", cartItem);
+     
+
+    
     
     return (
         <div className="min-h-screen bg-primary p-6">
@@ -45,7 +85,7 @@ function Cart() {
               <div key={index} className="flex justify-between border-b pb-4">
                 {/* Product Details */}
                 <div className="flex items-center">
-                  <img src="" alt={data.proName} className="w-24 h-24 object-cover rounded-md" />
+                  <img src={data.images[0]} alt={data.proName} className="w-24 h-24 object-cover rounded-md" />
                   <div className="ml-6">
                     <h3 className="text-base font-semibold">{data.prodName}</h3>
                     <p className="text-sm text-gray-500">Size: {}</p>
@@ -62,9 +102,9 @@ function Cart() {
                 <div className="text-right">
                   <p className="text-sm text-gray-500">{}</p> item.delivery
                   <div className="flex items-center mt-2">
-                    <button className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded-md text-black">-</button>
-                    <span className="mx-3">1</span>
-                    <button className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded-md text-black">+</button>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded-md text-black" onClick={() => handleDecreaseQuantity(data)}>-</button>
+                    <span className="mx-3">{data.quantity || 1}</span>
+                    <button className="bg-gray-200 hover:bg-gray-300 text-sm px-3 py-1 rounded-md text-black" onClick={() => handleIncreaseQuantity(data)}>+</button>
                   </div>
                   <button className="text-blue-500 hover:underline text-sm mt-2 block">SAVE FOR LATER</button>
                   <button className="text-red-500 hover:underline text-sm mt-2 block">REMOVE</button>
