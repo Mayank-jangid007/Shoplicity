@@ -5,39 +5,56 @@ function Cart() {
 
     const [ cartItem, setCartItem] = useState([])
     
-    const handleDecreaseQuantity = async (data) => { // agar data.quantity is null/undefined to function yhi ruk jaega mtlb reutrn hojaega 
-      if(!data.quantity || data.quantity <= 0) return
-        const updatedItems = cartItem.map(i => {
-          if(i.productId === data.productId){
-            return{ ...i, quantity: data.quantity - 1 }
-          }
-          return i
-        })
+    const handleDecreaseQuantity = async (data) => {
+        if(!data.quantity || data.quantity <= 0) return
+        
+        try {
+            // Update local state first with the new quantity
+            const newQuantity = data.quantity - 1
+            
+            // Create updated item with new quantity
+            const updatedItem = {
+                ...data,
+                quantity: newQuantity
+            }
 
-        setCartItem(updatedItems)
-      
-      // Update in database     
-      await service.addToCart({
-        ...data,
-        quantity: data.quantity - 1 // isme apan direactly updatedItems bhi de skte hai apnne yha overwrite kiya hai bus
-      })
+            // Update database with the complete item
+            await service.updateCartItem(updatedItem) // We'll need to create this method
+            
+            // Update local state
+            setCartItem(prevItems => 
+                prevItems.map(item => 
+                    item.productId === data.productId 
+                        ? updatedItem 
+                        : item
+                )
+            )
+        } catch (error) {
+            console.error("Error updating quantity:", error)
+        }
     }
 
     const handleIncreaseQuantity = async (data) => {
-      let updatedItems = cartItem.map((i) => {
-        if(i.productId === data.productId){
-          return { ...i, quantity: data.quantity + 1}
+        try {
+            // Update local state first with the new quantity
+            const newQuantity = data.quantity + 1
+            
+            // Create updated item with new quantity
+            const updatedItem = {
+                ...data,
+                quantity: newQuantity
+            }
+
+            // Update database with the complete item
+            await service.updateCartItem(updatedItem) // We'll need to create this method
+            
+            // Update local state
+            setCartItem(prevItems => 
+                prevItems.map(item => item.productId === data.productId ? updatedItem : item)
+            )
+        } catch (error) {
+            console.error("Error updating quantity:", error)
         }
-        return i
-      })
-
-      setCartItem(updatedItems);
-
-      await service.addToCart({
-        ...data,
-        quantity: data.quantity + 1
-      }) // to apnne idhar sidha pass krdiya updatedItems or decrement me apnne overwrite kiya tha
-
     }
 
     useEffect(() => {

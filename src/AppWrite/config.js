@@ -49,8 +49,8 @@ class Service {
                     price,
                     category,
                     discount,
-                    images
-                    // quantity,
+                    images,
+                    quantity: quantity || 1, // Default to 1 if not provided
                     // ...rest,
                 }
                 
@@ -75,6 +75,40 @@ class Service {
             return response.documents
         }catch(error){
             console.error("Error adding fetchBuyNowItems:", error);
+        }
+    }
+
+    async updateCartItem(item) {
+        try {
+            // First check if item exists
+            const existingItems = await this.fetchBuyNowItems()
+            const existingItem = existingItems.find(i => i.productId === item.productId)
+            
+            if (existingItem) {
+                // If item exists, update it
+                // Create a clean object without Appwrite metadata iska mtlb ye hai ki appwrite ke sath unwanted fields bhi ajate hai jese $id or bhi to jab apan update krte hai to ye fields bhi chale jate hai or appwrite inko accept nhi krta fhir error ajati hai
+                const cleanItem = {
+                    productId: item.productId,
+                    prodName: item.prodName,
+                    price: item.price,
+                    quantity: item.quantity,
+                    discount: item.discount,
+                    images: item.images
+                    // Add any other fields you need to update
+                }
+                return await this.databases.updateDocument(
+                    env.appwriteDatabaseId,
+                    env.appwriteCollectionAddToCartId,
+                    existingItem.$id, // Use the document ID from AppWrite
+                    cleanItem
+                )
+            } else {
+                // If item doesn't exist, create it
+                return await this.addToCart(item)
+            }
+        } catch (error) {
+            console.error("Error updating cart item:", error)
+            throw error
         }
     }
 }
