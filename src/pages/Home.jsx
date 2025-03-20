@@ -103,9 +103,9 @@ function Home() {
   return (
     <>
       {loading ? (
-        <div className="w-screen h-screen bg-primary flex justify-center items-center">Loading...</div>
+        <div className="w-screen h-screen bg-dark-primary  dark:bg-light-primary flex justify-center items-center">Loading...</div>
       ) : (
-        <div className="relative w-full h-full bg-primary p-4 overflow-auto">
+        <div className="relative w-full h-full bg-dark-primary dark:bg-light-secondary p-4 overflow-auto">
           {/* <Outlet /> */}
           {/*  Featured section */}
           <ul className="w-[98%] flex gap-2 h-[25rem] rounded-2xl overflow-hidden p-3 ml-9">
@@ -230,10 +230,10 @@ function Home() {
           </div>
 
           {/*Top Offers*/}
-          <div className="w-[95.5%] h-[388px] p-3 bg-secoundary ml-14 my-16 rounded-3xl">
-            <div className="w-full h-16 bg-tertiary flex justify-between rounded-full overflow-hidden items-center px-4">
+          <div className="w-[95.5%] h-[388px] p-3 bg-dark-secondary dark:bg-light-five ml-14 my-16 rounded-3xl">
+            <div className="w-full h-16 bg-dark-tertiary  dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
               <h2 className="font-bold text-2xl text-white">Top Offers</h2>
-              <button className="w-10 h-10 bg-white/25 rounded-full text-white text-center text-lg pl-3">
+              <button className="w-10 h-10 bg-white/25 rounded-full text-white dark:text-light-six text-center text-lg pl-3">
                 <MdNavigateNext />
               </button>
             </div>
@@ -242,7 +242,7 @@ function Home() {
               {/* {products.slice(0, 6).map((items) => ( */}
               {category.map(items => (
                 <div
-                  className="rounded-2xl overflow-hidden w-48 ring ring-white/40 p-4 text-center"
+                  className="rounded-2xl overflow-hidden w-48 dark:bg-light-tertiary ring ring-white/40 dark:ring-light-six p-4 text-center"
                   key={items.id} 
                   onClick={() => navigate(`category/${items.category}`)}
                 > 
@@ -250,8 +250,8 @@ function Home() {
                     src={items.images[0]}
                     className="w-44 h-44 rounded-2xl object-cover bg-white"
                   />
-                  <p className="text-white mt-2">{items.category}</p>
-                  <p className="font-bold text-white">60-50% off</p>
+                  <p className="text-white dark:text-light-six mt-2">{items.category}</p>
+                  <p className="font-bold text-white dark:text-light-six">60-50% off</p>
                 </div>
                 ))}
               {/* ))} */}
@@ -260,60 +260,60 @@ function Home() {
 
           {/* cards section */}
 
-          <div className="w-[95.5%] grid grid-cols-3 p-6 gap-6 bg-secoundary ml-14 my-16 rounded-3xl">
+          <div className="w-[95.5%] grid grid-cols-3 p-6 gap-6 bg-dark-secondary  dark:bg-light-five ml-14 my-16 rounded-3xl">
             {/* card-1 */}
-            <div className="p-3 bg-secoundary rounded-2xl w-full ring ring-white/20">
-              <div className="w-full h-16 mb-5 bg-tertiary flex justify-between rounded-full overflow-hidden items-center px-4">
-                <h2 className="font-bold text-2xl text-white">
+            <div className="p-3 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
+              <div className="w-full h-16 mb-5 bg-dark-tertiary dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
+                <h2 className="font-bold text-2xl text-white dark:text-light-tertiary">
                   HandPickes for you
                 </h2>
-                <button className="w-10 h-10 bg-white/25 rounded-full text-white text-center text-lg pl-3">
+                <button className="w-10 h-10 bg-white/25 rounded-full text-white  text-center text-lg pl-3">
                   <MdNavigateNext />
                 </button>
               </div>
 
               <div className="grid grid-cols-2 gap-5 p-2">
                 {products.slice(0, 4).map((item) => (
-                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 p-4 text-center">
+                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center">
                     <img
                       src={item.images[0]}
                       className="w-32 h-32 rounded-2xl object-cover bg-white"
                     />
-                    <p className="text-white mt-2">{item.title}</p>
-                    <p className="font-bold text-white">{item.discountPercentage}% off</p>
+                    <p className="text-white dark:text-light-six mt-2">{item.title}</p>
+                    <p className="font-bold text-white dark:text-light-six">{item.discountPercentage}% off</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* card-2 */}
-            <div className="p-3 bg-secoundary rounded-2xl w-full ring ring-white/20">
-              <div className="w-full h-16 mb-5 bg-tertiary flex justify-between rounded-full overflow-hidden items-center px-4">
-                <h2 className="font-bold text-2xl text-white">
+            <div className="p-3 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
+              <div className="w-full h-16 mb-5 bg-dark-tertiary dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
+                <h2 className="font-bold text-2xl text-white dark:text-light-tertiary">
                   Flipcart's finest yours now!
                 </h2>
-                <button className="w-10 h-10 bg-white/25 rounded-full text-white text-center text-lg pl-3">
+                <button className="w-10 h-10 bg-white/25 rounded-full text-white text-center text-lg pl-3 dark:text-light-six">
                   <MdNavigateNext />
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-5 p-2">
                 {products.slice(9, 13).map((item) => (
-                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 p-4 text-center">
+                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center">
                     <img
                       src={item.images[0]}
-                      className="w-32 h-32 rounded-2xl object-cover bg-white"
+                      className="w-32 h-32 rounded-2xl object-cover bg-white dark:text-light-six"
                     />
-                    <p className="text-white mt-2">{item.title}</p>
-                    <p className="font-bold text-white">{item.discountPercentage}% off</p>
+                    <p className="text-white dark:text-light-six mt-2">{item.title}</p>
+                    <p className="font-bold text-white dark:text-light-six">{item.discountPercentage}% off</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* card-3 */}
-            <div className="p-3 bg-secoundary rounded-2xl w-full ring ring-white/20">
-              <div className="w-full h-16 mb-5 bg-tertiary flex justify-between rounded-full overflow-hidden items-center px-4">
-                <h2 className="font-bold text-2xl text-white">
+            <div className="p-3 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
+              <div className="w-full h-16 mb-5 bg-dark-tertiary dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
+                <h2 className="font-bold text-2xl text-white dark:text-light-tertiary">
                   Finest Gear To Stay Fit
                 </h2>
                 <button className="w-10 h-10 bg-white/25 rounded-full text-white text-center text-lg pl-3">
@@ -323,13 +323,13 @@ function Home() {
 
               <div className="grid grid-cols-2 gap-5 p-2">
                 {products.slice(4, 8).map((item) => (
-                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 p-4 text-center">
+                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center">
                     <img
                       src={item.images[0]}
                       className="w-32 h-32 rounded-2xl object-cover bg-white"
                     />
-                    <p className="text-white mt-2">{item.title}</p>
-                    <p className="font-bold text-white">{item.discountPercentage}% off</p>
+                    <p className="text-white dark:text-light-six mt-2">{item.title}</p>
+                    <p className="font-bold text-white dark:text-light-six">{item.discountPercentage}% off</p>
                   </div>
                 ))}
               </div>

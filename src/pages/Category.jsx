@@ -158,14 +158,14 @@ function Category() {
   return (
     <>
       {loading ? <h1 className='text-white'>Loading...</h1> :
-        <div className='w-full min-h-screen overflow-hidden bg-primary flex flex-row-reverse '>
+        <div className='w-full min-h-screen overflow-hidden bg-dark-primary dark:bg-light-secondary flex flex-row-reverse '>
           <Outlet />
-          <div className='w-[20%] mt-6 rounded-lg h-fit bg-secoundary p-2 '>
+          <div className='w-[20%] mt-6 rounded-lg h-fit bg-dark-secondary dark:bg-light-tertiary p-2 '>
 
             <div className='border-b border-white/20 h-fit p-2'>
               <div className='flex justify-between items-center'>
-                <h1 className='text-white h-fit text-2xl font-bold'>Filter</h1>
-                <p className='text-white hover:text-white/60'>Clear All</p>
+                <h1 className='text-white dark:text-light-six h-fit text-2xl font-bold'>Filter</h1>
+                <p className='text-white dark:text-light-six hover:text-white/60'>Clear All</p>
               </div>
 
               {/* Selected category*/}
@@ -181,7 +181,7 @@ function Category() {
 
             {/* Gender section */}
             <div className='w-full mt-3 h-fit border-b border-white/20 ' onClick={() => setToggleGender(!toggleGender)}>
-              <div className={`flex gap-2 h-10 relative items-center text-white`}>
+              <div className={`flex gap-2 h-10 relative items-center text-white dark:text-light-six`}>
                 <h1>Gender</h1>
                 <RiArrowDropDownLine className={`text-2xl absolute right-0  transition-all duration-300 ease-in-out ${toggleGender ? "rotate-180" : "rotate-0"}`} />
               </div>
@@ -196,14 +196,14 @@ function Category() {
             </div>
 
             {/* Discount Section*/}
-            <div className='w-full mt-3 h-fit border-b border-white/20 ' onClick={() => setToggleDiscount(!toggleDiscount)}>
-              <div className={`flex gap-2 h-10 relative items-center text-white`}>
+            <div className='w-full mt-3 h-fit border-b border-white/20' onClick={() => setToggleDiscount(!toggleDiscount)}>
+              <div className={`flex gap-2 h-10 relative items-center text-white dark:text-light-six`}>
                 <h1>Discount</h1>
                 <RiArrowDropDownLine className={`text-2xl absolute right-0  transition-all duration-300 ease-in-out ${toggleDiscount ? "rotate-180" : "rotate-0"}`} />
               </div>
               <div onClick={(e) => e.stopPropagation()} className={`flex  ${toggleDiscount ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}  overflow-y-auto transition-all duration-500 ease-in-out flex-col gap-2 pb-2 text-white`}>
                 {Discount.map((item, index) => (
-                  <div className='flex gap-2 relative text-white text-lg'>
+                  <div className='flex gap-2 relative text-white dark:text-light-six text-lg'>
                     <input type={'checkbox'} key={index} checked={filter?.includes(`${item}%`)} onClick={() => handleDiscountChange(`${item}%`)} />
                     <label>{item}%</label>
                   </div>
@@ -213,13 +213,13 @@ function Category() {
 
             {/*Customer Ratings Section*/}
             <div className='w-full mt-3 h-fit border-b border-white/20 ' onClick={() => setCustomerRatings(!toggleRating)}>
-              <div className={`flex gap-2 h-10 relative items-center text-white`}>
+              <div className={`flex gap-2 h-10 relative items-center text-white dark:text-light-six`}>
                 <h1>Customer Ratings</h1>
                 <RiArrowDropDownLine className={`text-2xl absolute right-0  transition-all duration-300 ease-in-out ${toggleRating ? "rotate-180" : "rotate-0"}`} />
               </div>
               <div onClick={(e) => e.stopPropagation()} className={`flex  ${toggleRating ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}  overflow-y-auto transition-all duration-500 ease-in-out flex-col gap-2 pb-2 text-white `}>
                 {rating.map((item, index) => (
-                  <div className='flex gap-2 relative text-white text-lg' key={index} onClick={() => handleRating(`${item}★ & above`)}>
+                  <div className='flex gap-2 relative text-white dark:text-light-six text-lg' key={index} onClick={() => handleRating(`${item}★ & above`)}>
                     <input type={'checkbox'} checked={filter.includes(`${item}★ & above`)} /> {/*ye cheked me ye isliye likha hai taki jab ye filterd vale section se hta de rating to yha se bhi check hat jae*/}
                     <label>{item}★ & above</label>
                   </div>
@@ -230,16 +230,16 @@ function Category() {
 
             {/* Price Section*/}
             <div className='flex flex-col w-full mt-3 h-fit border-b border-white/20 '>
-              <div className={`relative flex justify-between w-full gap-2 h-10 items-center text-white`}>
+              <div className={`relative flex justify-between w-full gap-2 h-10 items-center text-white dark:text-light-six`}>
                 <h1>Price</h1>
                 <p className="absolute right-0">Clear</p>
               </div>
               <div className="flex flex-col gap-2 py-2 items-center">
 
                 {/* PRICE RANGE */}
-                <div className="flex flex-col items-center p-2 bg-gray-800 text-white rounded-lg w-full max-w-md shadow-md">
+                <div className="flex flex-col items-center p-2 bg-gray-800 dark:bg-light-five text-white rounded-lg w-full max-w-md shadow-md">
                   <form className='flex gap-2 mb-9'>
-                    <select name="cars" className='bg-gray-700  text-white rounded-lg p-1' value={minValue} onChange={(e) => setMinValue(Number(e.target.value))} >
+                    <select name="cars" className='bg-gray-700 dark:bg-light-tertiary text-white dark:text-light-six rounded-lg p-1' value={minValue} onChange={(e) => setMinValue(Number(e.target.value))} >
                       <option value={minValue} >{minValue}</option>
                       {piceArr.map((item, index) => (
                         <option value={item} key={index}>{item}</option>
@@ -248,7 +248,7 @@ function Category() {
 
                     <label>To</label>
 
-                    <select name="cars" className='bg-gray-700  text-white rounded-lg p-1' value={maxValue} onChange={(e) => setMaxValue(Number(e.target.value))} >
+                    <select name="cars" className='bg-gray-700 dark:bg-light-tertiary  text-white dark:text-light-six rounded-lg p-1' value={maxValue} onChange={(e) => setMaxValue(Number(e.target.value))} >
                       <option value={maxValue} >{maxValue}</option>
                       {piceArr.map((item, index) => (
                         <option value={item} key={index}>{item}</option>
@@ -282,7 +282,7 @@ function Category() {
                     {/* Slider Track */}
                     <div className="relative w-full h-2 bg-gray-600 rounded-full">
                       <div
-                        className="absolute h-2 bg-blue-500 rounded-full"
+                        className="absolute h-2 bg-blue-500 dark:bg-light-six rounded-full"
                         style={{
                           left: `${((minValue - min) / (max - min)) * 100}%`,
                           right: `${100 - ((maxValue - min) / (max - min)) * 100}%`,
@@ -290,22 +290,22 @@ function Category() {
                       ></div>
                     </div>
                     <div className="flex gap-5 w-full text-white text-sm px-2">
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
-                      <span className='text-white/30'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
+                      <span className='text-white'>.</span>
                     </div>
                   </div>
 
                   {/* Apply Button */}
                   <button
-                    className="mt-4 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+                    className="mt-4 px-4 py-2 bg-blue-600 dark:bg-light-six rounded-lg hover:bg-blue-700 transition"
                     onClick={() =>
                       alert(`Selected Price Range: ₹${minValue} - ₹${maxValue}`)
                     }
@@ -328,7 +328,7 @@ function Category() {
               {product.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-secoundary rounded-lg shadow-md overflow-hidden p-4 hover:shadow-xl transition duration-200"
+                  className="bg-dark-secondary dark:bg-light-five p-3 rounded-lg duration-200"
                   onClick={() => navigate(`product/${encodeURIComponent(item.title)}`, { state: { id: item.id, item: item } })}  // to encodeURIComponent ye kya krta hai ki jo bhi khali sapce hote hai na name me to usko fill krdeta hai sepecial charater se or khali sapce url me error deta ahi
                 >
                   {/* Image */}
@@ -341,13 +341,13 @@ function Category() {
                   {/* Product Info */}
                   <div className="mt-4">
                     {/* Product Name */}
-                    <h3 className="text-lg font-semibold text-white truncate">
+                    <h3 className="text-lg font-semibold text-white dark:text-light-six truncate">
                       {item.title} {index + 1}
                     </h3>
 
                     {/* Price and Discount */}
                     <div className="flex items-center justify-between mt-2">
-                      <p className="text-sm font-medium text-white">₹{item.price}</p>
+                      <p className="text-sm font-medium text-white dark:text-light-six">₹{item.price}</p>
                       <span className="text-xs font-semibold text-red-500 bg-red-100 px-2 py-1 rounded-md">
                         {item.discountPercentage}% OFF
                       </span>

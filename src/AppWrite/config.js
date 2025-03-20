@@ -39,6 +39,20 @@ class Service {
 
     async addToCart({ productId, prodName, price, images, category, quantity, discount, ...rest }) {
         try {
+            // Make sure discount is a valid number between 1 and 100
+            let validDiscount = discount;
+            
+            // If discount includes % sign, remove it
+            if (typeof validDiscount === 'string' && validDiscount.includes('%')) {
+                validDiscount = validDiscount.replace('%', '');
+            }
+            
+            // Parse to number and ensure it's between 1-100
+            validDiscount = parseInt(validDiscount) || 1;
+            if (validDiscount < 1) validDiscount = 1;
+            if (validDiscount > 100) validDiscount = 100;
+            
+            
             return await this.databases.createDocument(
                 env.appwriteDatabaseId,
                 env.appwriteCollectionAddToCartId,
@@ -48,14 +62,11 @@ class Service {
                     prodName,
                     price,
                     category,
-                    discount,
+                    discount: validDiscount, // Use validated discount
                     images,
                     quantity: quantity || 1, // Default to 1 if not provided
-                    // ...rest,
                 }
-                
             );
-            console.log("====",prodName);
         } catch (error) {
             console.error("Error adding BuyNow:", error);
             console.log("Appwrite URL:", env.appwriteUrl);
@@ -85,17 +96,30 @@ class Service {
             const existingItem = existingItems.find(i => i.productId === item.productId)
             
             if (existingItem) {
-                // If item exists, update it
-                // Create a clean object without Appwrite metadata iska mtlb ye hai ki appwrite ke sath unwanted fields bhi ajate hai jese $id or bhi to jab apan update krte hai to ye fields bhi chale jate hai or appwrite inko accept nhi krta fhir error ajati hai
+                // Make sure discount is a valid number between 1 and 100
+                let validDiscount = item.discount;
+                
+                // If discount includes % sign, remove it
+                if (typeof validDiscount === 'string' && validDiscount.includes('%')) {
+                    validDiscount = validDiscount.replace('%', '');
+                }
+                
+                // Parse to number and ensure it's between 1-100
+                validDiscount = parseInt(validDiscount) || 1;
+                if (validDiscount < 1) validDiscount = 1;
+                if (validDiscount > 100) validDiscount = 100;
+                
+                // Create a clean object without Appwrite metadata
                 const cleanItem = {
                     productId: item.productId,
                     prodName: item.prodName,
                     price: item.price,
                     quantity: item.quantity,
-                    discount: item.discount,
+                    discount: validDiscount, // Use validated discount
                     images: item.images
                     // Add any other fields you need to update
                 }
+                
                 return await this.databases.updateDocument(
                     env.appwriteDatabaseId,
                     env.appwriteCollectionAddToCartId,
