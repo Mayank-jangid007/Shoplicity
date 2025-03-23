@@ -4,6 +4,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import service from "../AppWrite/config";
 import env from "../ImportEnvs/Envs";
+import axios from "axios";
 function ProductPage() {
 
     const { productName, categoryName } = useParams() // to ye apan dodo param bhi la skte hai or ese apan descrutre krte hai isse apne konse page pr hai uska name agya  
@@ -11,6 +12,31 @@ function ProductPage() {
     const [feacuredimg, setImg] = useState("")
     const navigate = useNavigate()
     const { item } = location.state || {}
+    const [products, setProducts] = useState([]);
+    
+    console.log("URL Params:", { productName, categoryName });
+    console.log("Location State:", location.state);
+    console.log("Item received:", item);
+    
+    useEffect(() => {
+        const fetchRelatedProducts = async () => {
+            try {
+                const response = await axios.get(`https://dummyjson.com/products/category/${categoryName}`);
+                // Filter out current product
+                const filteredProducts = response.data.products.filter(
+                    prod => prod.title !== productName
+                );
+                setProducts(filteredProducts);
+                
+            } catch (error) {
+                console.error("Error fetching related products:", error);
+            }
+        };
+
+        if (categoryName) {
+            fetchRelatedProducts();
+        }
+    }, [categoryName, productName]);
 
 
 
@@ -131,6 +157,45 @@ function ProductPage() {
                         <button class="px-5 py-2  bg-gray-700 text-white rounded-md hover:bg-gray-800"><FaRegHeart /></button>
                     </div>
                     
+                </div>
+            </div>
+            
+            <div className="max-w-[100%] mt-20 ml-5 bg-dark-primary ring ring-white/40 dark:bg-light-five p-5 rounded-xl">
+                <h2 className="text-2xl font-semibold flex items-center px-3 bg-dark-tertiary dark:bg-light-six dark:text-light-secondary rounded-full h-16 mb-4 text-white">Similar products in {categoryName}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                    {products.map((product) => (
+                        <div 
+                            key={product.id} 
+                            className="bg-dark-secondary dark:bg-light-tertiary p-4 rounded-lg shadow-lg cursor-pointer"
+                            onClick={() => navigate(
+                                `/category/${categoryName}/product/${encodeURIComponent(product.title)}`,
+                                { state: { item: product } }
+                            )}
+                        >
+                            <img 
+                                src={product.images[0]} 
+                                alt={product.title} 
+                                className="w-full h-40 object-cover rounded-md" 
+                            />
+                            <h3 className="text-sm font-semibold mt-2 text-white dark:text-light-six">
+                                {product.title}
+                            </h3>
+                            <div className="flex items-center space-x-2 mt-1">
+                                <span className="text-lg font-bold text-green-600">
+                                    ₹{product.price}
+                                </span>
+                                <span className="text-gray-500 line-through text-sm">
+                                    ₹{Math.round(product.price * (100 / (100 - product.discountPercentage)))}
+                                </span>
+                                <span className="text-green-600 text-sm">
+                                    {Math.round(product.discountPercentage)}% off
+                                </span>
+                            </div>
+                            <span className="text-blue-600 font-medium mt-1 block">
+                                🛡 Assured
+                            </span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

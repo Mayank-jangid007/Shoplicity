@@ -4,7 +4,7 @@ import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MdNavigateNext } from "react-icons/md";
-import { useNavigate } from "react-router"
+import { useNavigate , useLocation} from "react-router"
 
 
 function Home() {
@@ -15,6 +15,16 @@ function Home() {
   const navigate = useNavigate();
 
   console.log("----",products);
+
+  const handleProductClick = (item) => {
+    navigate(`/category/${item.category}/product/${encodeURIComponent(item.title)}`,{
+      state:{
+        id: item.id,
+        item: item,
+        category: item.category
+      }
+    })
+  }
   
   
   const imgObject = [
@@ -105,10 +115,10 @@ function Home() {
       {loading ? (
         <div className="w-screen h-screen bg-dark-primary  dark:bg-light-primary flex justify-center items-center">Loading...</div>
       ) : (
-        <div className="relative w-full h-full bg-dark-primary dark:bg-light-secondary p-4 overflow-auto">
+        <div className="relative w-full h-full duration-500 bg-dark-primary dark:bg-light-secondary p-4 overflow-auto">
           {/* <Outlet /> */}
           {/*  Featured section */}
-          <ul className="w-[98%] flex gap-2 h-[25rem] rounded-2xl overflow-hidden p-3 ml-9">
+          <ul className="w-[98%] flex gap-2  h-[25rem] rounded-2xl overflow-hidden p-3 ml-9">
             {imgObject
               .slice(currentIndex, currentIndex + 3)
               .map((data, index) => (
@@ -230,7 +240,7 @@ function Home() {
           </div>
 
           {/*Top Offers*/}
-          <div className="w-[95.5%] h-[388px] p-3 bg-dark-secondary dark:bg-light-five ml-14 my-16 rounded-3xl">
+          <div className="w-[95.5%] h-[388px] duration-500 p-3 bg-dark-secondary dark:bg-light-five ml-14 my-16 rounded-3xl">
             <div className="w-full h-16 bg-dark-tertiary  dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
               <h2 className="font-bold text-2xl text-white">Top Offers</h2>
               <button className="w-10 h-10 bg-white/25 rounded-full text-white dark:text-light-six text-center text-lg pl-3">
@@ -260,9 +270,9 @@ function Home() {
 
           {/* cards section */}
 
-          <div className="w-[95.5%] grid grid-cols-3 p-6 gap-6 bg-dark-secondary  dark:bg-light-five ml-14 my-16 rounded-3xl">
+          <div className="w-[95.5%] grid grid-cols-3 duration-500 p-6 gap-6 bg-dark-secondary  dark:bg-light-five ml-14 my-16 rounded-3xl">
             {/* card-1 */}
-            <div className="p-3 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
+            <div className="p-3 duration-500 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
               <div className="w-full h-16 mb-5 bg-dark-tertiary dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
                 <h2 className="font-bold text-2xl text-white dark:text-light-tertiary">
                   HandPickes for you
@@ -274,7 +284,10 @@ function Home() {
 
               <div className="grid grid-cols-2 gap-5 p-2">
                 {products.slice(0, 4).map((item) => (
-                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center">
+                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center" 
+                    key={item.id}
+                    onClick={() => handleProductClick(item)}
+                  >
                     <img
                       src={item.images[0]}
                       className="w-32 h-32 rounded-2xl object-cover bg-white"
@@ -287,7 +300,7 @@ function Home() {
             </div>
 
             {/* card-2 */}
-            <div className="p-3 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
+            <div className="p-3 duration-500 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
               <div className="w-full h-16 mb-5 bg-dark-tertiary dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
                 <h2 className="font-bold text-2xl text-white dark:text-light-tertiary">
                   Flipcart's finest yours now!
@@ -298,7 +311,10 @@ function Home() {
               </div>
               <div className="grid grid-cols-2 gap-5 p-2">
                 {products.slice(9, 13).map((item) => (
-                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center">
+                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center"
+                    key={item.id}
+                    onClick={() => handleProductClick(item)}
+                  >
                     <img
                       src={item.images[0]}
                       className="w-32 h-32 rounded-2xl object-cover bg-white dark:text-light-six"
@@ -311,7 +327,7 @@ function Home() {
             </div>
 
             {/* card-3 */}
-            <div className="p-3 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
+            <div className="p-3 duration-500 bg-dark-secondary dark:bg-light-tertiary rounded-2xl w-full ring ring-white/20 dark:ring-light-six">
               <div className="w-full h-16 mb-5 bg-dark-tertiary dark:bg-light-six flex justify-between rounded-full overflow-hidden items-center px-4">
                 <h2 className="font-bold text-2xl text-white dark:text-light-tertiary">
                   Finest Gear To Stay Fit
@@ -323,7 +339,10 @@ function Home() {
 
               <div className="grid grid-cols-2 gap-5 p-2">
                 {products.slice(4, 8).map((item) => (
-                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center">
+                  <div className="rounded-2xl overflow-hidden w-full ring ring-white/40 dark:ring-light-six p-4 text-center"
+                    key={item.id}
+                    onClick={() => handleProductClick(item)}
+                  >
                     <img
                       src={item.images[0]}
                       className="w-32 h-32 rounded-2xl object-cover bg-white"
