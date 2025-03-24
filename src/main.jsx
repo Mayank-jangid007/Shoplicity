@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './components/ProtectedRoute';
 import './index.css'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
@@ -12,6 +13,7 @@ import ContactUs from './pages/ContactUs.jsx'
 import Shop from './pages/Shop.jsx'
 import ProductPage from './pages/ProductPage.jsx'
 import Cart from './pages/Cart.jsx'
+import Signup from './Components/SignUp.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +21,10 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<App />}  errorElement = {<ErrorBoundary/>} >
             <Route path="/" element={<Home/>}  errorElement = {<ErrorBoundary/>} />
+            {/* <Route path="/" element={  
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>}  errorElement = {<ErrorBoundary/>} /> */}
             <Route path="category/:categoryName" element={<Category />} errorElement = {<ErrorBoundary/>}>
              <Route path="product/:productName" element={<ProductPage />} errorElement = {<ErrorBoundary/>} /> 
             </Route> 
@@ -27,6 +33,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="ContactUs" element={<ContactUs />} errorElement = {<ErrorBoundary/>} /> 
             <Route path="Shop" element={<Shop />} errorElement = {<ErrorBoundary/>} /> 
             <Route path="cart" element={<Cart />} errorElement = {<ErrorBoundary/>} /> 
+            <Route path="signUp" element={<Signup />}/>
           </Route>
         </Routes>
     </BrowserRouter>

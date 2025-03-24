@@ -1,10 +1,11 @@
-import { Client, Databases, ID } from "appwrite";
+import { Client, Account, Databases, ID } from "appwrite";
 import env from "../ImportEnvs/Envs"
 
 class Service {
     client = new Client();
     // databases = new Databases();
     databases;
+    account;
 
     constructor() {
         this.client
@@ -13,6 +14,8 @@ class Service {
         .setProject(env.appwriteProjectId);
         this.databases = new Databases(this.client); //  to apan ye new Databases isliye kr rhe hai kyuki wha appwrteite pr Databases ki class ni ui hai to apan ne eccess leliya or uske andar apnne data daldiya
         // this.databases(this.client)  //  to apan ye new Databases isliye kr rhe hai kyuki wha appwrteite pr Databases ki class ni ui hai to apan ne eccess leliya or uske andar apnne data daldiya
+
+        this.account = new Account(this.client)
     }
 
 
@@ -135,6 +138,59 @@ class Service {
             throw error
         }
     }
+
+    async createAccount({email, password, name}) {
+        let retries = 3;
+        while (retries > 0) {
+            try {
+                const userAccount = await this.account.create(
+                    ID.unique(),
+                    email,
+                    password,
+                    name
+                );
+                return userAccount;
+            } catch (error) {
+                if (error.code === 429) { // Rate limit error code
+                    retries--;
+                    if (retries > 0) {
+                        // Wait for 2 seconds before retrying
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        continue;
+                    }
+                }
+                throw error;
+            }
+        }
+    }
+
+    async login({email, password}){
+        try{
+            return await this.account.createEmailPasswordSession(email, password);
+        }catch(error){
+            console.log("login error:", error);
+            throw error;
+        }
+    }
+
+    async getCurrentUser(){
+        try{
+            return await this.account.get();
+        }catch(error) {
+            console.log("Get user error:", error);
+        }
+        return null;
+    }
+
+    async logout(){
+        try{
+            return await this.account.deleteSession('current')
+        }catch (error) {
+            console.log("Logout error:", error);
+        }
+    }
+
+
 }
 
 const service = new Service() // to apnne ye pehle object bnaya fhir export kiya kyuki sidha class ko export krte to wha jake bhi apan ko object bnana pdta hfir apan ye class ke andar wale function ko access kr pate
